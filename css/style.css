@@ -20,11 +20,14 @@
     width: 7rem;
 }
 
-
-.asd {
-    height: 8rem;
+.card-body:not(.card-body ~ .card-body) {
+    /* background: red; */
+    height: 9rem;
     transition: all .3s linear;
-}
+    overflow: hidden;
+
+} 
+
 
 .fa-remove {
     /* border: 2px red solid; */
@@ -73,7 +76,7 @@ li.checked>.fa-check {
 
 @media screen and (max-width: 1200px) {
     .container {
-        width: 70vw !important; 
+        width: 70vw !important;
         /* height: fit-content !important; */
     }
 

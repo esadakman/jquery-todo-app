@@ -81,7 +81,7 @@ containerDiv.on("click", (e) => {
 function addList(newTodo) {
   //? her bir todo objesini destructure yaptık
   const { id, content, isDone } = newTodo;
-  todoList.append(`
+  todoList.prepend(`
      <li class="form-group-item d-flex justify-content-between ${
        isDone ? "checked" : ""
      } " id=${id} >
@@ -96,7 +96,7 @@ function addList(newTodo) {
 function filterTodos(e) {
   $(function () {
     $(".form-group-item").each(function () {
-      if ($(this).text().indexOf($("#search").val()) == -1) {
+      if ($(this).text().toLowerCase() .indexOf($("#search").val().toLowerCase()) == -1) {
         $(this).attr("style", "display: none !important");
       } else {
         $(this).attr("style", "display: inline ");
