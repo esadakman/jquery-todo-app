@@ -11,6 +11,11 @@ $(window).on("load", () => {
   });
   search.keyup(filterTodos);
 });
+// * Clear Button
+$("#clear").on("click", function () {
+  search.val("");
+  filterTodos();
+});
 containerDiv.on("click", (e) => {
   e.preventDefault();
   // ! addtodo button event
@@ -29,8 +34,6 @@ containerDiv.on("click", (e) => {
       localStorage.setItem("todos", JSON.stringify(todos));
       addList(newTodoObject);
       inputTodo.val("");
-      // !============================================
-      // addTodoToStorage(newTodo);
     }
   } else if (e.target.classList.contains("fa-remove")) {
     //? Dizinin ilgili elementini sildi
@@ -49,6 +52,7 @@ containerDiv.on("click", (e) => {
     todos.map((newTodo, index) => {
       if (newTodo.id == $(e.target).closest("li").attr("id")) {
         todos[index].isDone = !todos[index].isDone;
+        showAlert("success", `Your todos has been succesfully updated.`);
       }
     });
     //?todos dizisinin son halini localStorage'e sakla
@@ -61,14 +65,13 @@ containerDiv.on("click", (e) => {
     }
     // ! Bütün childları silme
   } else if (e.target.classList.contains("btn-danger")) {
-    let ul = $(e.target).prev().prev()
-    console.log($(e.target).prev().prev().children().length);
+    let ul = $(e.target).prev().prev();
     if (ul.children().length > 0) {
-      if (confirm("Are you sure to delete all todos ?")) { 
-          ul.empty();
-          localStorage.removeItem("todos"); 
+      if (confirm("Are you sure to delete all todos ?")) {
+        ul.empty();
+        localStorage.removeItem("todos");
       }
-    } else { 
+    } else {
       showAlert("danger", "No Todos left to delete");
     }
   }
@@ -89,18 +92,16 @@ function addList(newTodo) {
 }
 
 // ! filter todos
-function filterTodos(e) {
-  console.log($(e.target.nodeName));
-  const filterValue = e.target.value.toLocaleLowerCase();
-  const listItems = document.querySelectorAll(".form-group-item");
 
-  listItems.forEach(function (listItem) {
-    const text = listItem.textContent.toLowerCase();
-    if (text.indexOf(filterValue) === -1) {
-      listItem.setAttribute("style", "display : none !important");
-    } else {
-      listItem.setAttribute("style", "display : block");
-    }
+function filterTodos(e) {
+  $(function () {
+    $(".form-group-item").each(function () {
+      if ($(this).text().indexOf($("#search").val()) == -1) {
+        $(this).attr("style", "display: none !important");
+      } else {
+        $(this).attr("style", "display: inline ");
+      }
+    });
   });
 }
 //  ! id function
@@ -110,13 +111,15 @@ function ID() {
 // ! alerttttttt ================
 
 function showAlert(type, message) {
-  firstCardBody.append(`
-  <div class="alert alert-${type}">
-    ${message} 
-  </div>
-  `);
-  // * set timeout
-  setTimeout(function () {
-    $(".alert").remove();
-  }, 1000);
+  // ? fadeIn-Out animations
+  let alertDiv = $(`
+    <div class="alert alert-${type}">
+      ${message} 
+    </div>
+  `).hide();
+  $(".card-body").eq(0).append(alertDiv);
+  alertDiv.fadeIn(1500);
+  $(".alert").fadeOut(2000, function () {
+    $(this).remove();
+  });
 }
