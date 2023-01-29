@@ -21,16 +21,20 @@
 }
 
 .card-body:not(.card-body ~ .card-body) {
-    /* background: red; */
-    height: 9rem;
+    height: auto;
+    max-height: 9rem;
     transition: all .3s linear;
     overflow: hidden;
+}
 
-} 
-
+@media screen and (max-width: 600px) {
+    .card-body:not(.card-body ~ .card-body) {
+        height: auto;
+        max-height: 18rem;
+    }
+}
 
 .fa-remove {
-    /* border: 2px red solid; */
     color: red;
     font-size: 1.5rem;
     margin-right: 1rem;
